@@ -21,12 +21,33 @@ let ship = {
     height : shipHeight,
 }
 
-window.onload = function(){
+let shipImg;
+let shipVelocityX = tileSize; //rychlost pohybu lodi
+
+window.onload = function() {
     board = document.getElementById("board");
     board.width = boardWidth;
     board.height = boardHeight;
     context = board.getContext("2d"); //pouzivano pro kresleni do tabulky
 
     //vykresleni lodi
-    
+    //context.fillstyle="green";
+    //context.fillRect(ship.x, ship.y, ship.width, ship.height);
+
+    //nacist obrazek
+    shipImg = new Image();
+    shipImg.src = "img/ship.png"
+    shipImg.onload = function(){ //nacte obrazek lodi
+        context.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height);
+    }
+    requestAnimationFrame(update);
 }
+
+function update() {
+    requestAnimationFrame(update);
+    //lod
+    context.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height);
+
+}
+
+//pokracovani ------------- 14:00
