@@ -6,3 +6,17 @@ body{
 #board{
     background-color: black;
 }
+
+body {
+    background-image: url("img/bg_space.png");
+    background-size: cover;
+}
+
+h1 {
+    font-size: 80px;
+    color: white;
+    text-shadow: 0px 0px 15px #ff0000;
+    font-family: fantasy;
+    font-weight: 300;
+    line-height: 5mm;
+}

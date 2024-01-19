@@ -62,7 +62,7 @@ window.onload = function() {
     }
 
     alienImg = new Image();
-    alienImg.src = "img/alien.png";
+    alienImg.src = "img/alien1.png";
     createAliens();
 
     requestAnimationFrame(update);
@@ -135,7 +135,7 @@ function update() {
         //zvetsit pocet mimozemsanu v radcich a sloupcich o 1
     alienColumns = Math.min(alienColumns + 1, columns/2 -2); //omezeni na 16/2 -2 = 6
     alienRows = Math.min(alienRows + 1, rows-4); //cap at 16-4 = 12
-    alienVelocityX += 0.2; //zvyseni rychlosti mimozemstanu
+    alienVelocityX += 0.1; //zvyseni rychlosti mimozemstanu
     alienArray = [];
     bulletArray = [];
     createAliens();
@@ -143,7 +143,7 @@ function update() {
 
     //skore
     context.fillStyle="white";
-    context.font="16px courier";
+    context.font="bolder 22px sans-serif";
     context.fillText(score, 5, 20);
 
 }
