@@ -1,4 +1,4 @@
-//tabulka
+//tabulka a jeji promenne
 let tileSize = 32; // 32 pixelu
 let rows = 16; 
 let columns = 16;
@@ -8,7 +8,7 @@ let boardWidth = tileSize * columns; // 32 * 16
 let boardHeight = tileSize * rows; //32 * 16
 let context;
 
-//lod
+//lod a jeji promenne
 let shipWidth = tileSize*2; //sirka lode 64p
 let shipHeight = tileSize; //vyska lode 32p
 let shipX = tileSize * columns/2 - tileSize;
@@ -24,7 +24,7 @@ let ship = {
 let shipImg;
 let shipVelocityX = tileSize; //rychlost pohybu lodi
 
-//mimozemstani
+//mimozemstani a jejich promenne
 let alienArray = [];
 let alienWidth = tileSize*2;
 let alienHeight = tileSize;
@@ -44,7 +44,7 @@ let bulletVelocityY = -10; //rychlost pohybu strely
 let score = 0;
 let gameOver = false;
 
-window.onload = function() {
+window.onload = function() { // po nacteni stranky se spusti vse v funkci
     board = document.getElementById("board");
     board.width = boardWidth;
     board.height = boardHeight;
@@ -56,31 +56,31 @@ window.onload = function() {
 
     //nacist obrazek
     shipImg = new Image();
-    shipImg.src = "img/ship.png"
+    shipImg.src = "img/ship.png" //nastavi cestu obrazku lodi
     shipImg.onload = function() { //nacte obrazek lodi
-        context.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height);
+        context.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height); //vykresli lod
     }
 
     alienImg = new Image();
-    alienImg.src = "img/alien1.png";
+    alienImg.src = "img/alien1.png"; //nastavi cestu obrazku mimozemstana
     createAliens();
 
-    requestAnimationFrame(update);
+    requestAnimationFrame(update); //naslouchani stisku urcitych tlacitek v obnovovaci frekvenci
     document.addEventListener("keydown", moveShip);
     document.addEventListener("keyup", shoot);
 }
 
-function update() {
+function update() { //aktualizace stavu hry, vyvolana 'requestAnimationFrame(update);'
     requestAnimationFrame(update);
 
     if (gameOver){
         return;
     }
 
-    context.clearRect(0, 0, board.width, board.height);
+    context.clearRect(0, 0, board.width, board.height); //vymazani platna pro vykresleni novych objektu na platno
 
     //lod
-    context.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height);
+    context.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height); //vykresli lod
 
     //mimozemstane
     for (let i = 0; i < alienArray.length; i++){
@@ -98,9 +98,9 @@ function update() {
                     alienArray[j].y += alienHeight;
                 }
             }
-            context.drawImage(alienImg, alien.x, alien.y, alien.width, alien.height);
+            context.drawImage(alienImg, alien.x, alien.y, alien.width, alien.height); //vykresleni mimozemstanu
 
-            if (alien.y >= ship.y){
+            if (alien.y >= ship.y){ //pokud se mimozemstane dostanou na radek lode, hra konci
                 gameOver = true;
             }
         }
@@ -111,22 +111,22 @@ function update() {
         let bullet = bulletArray[i];
         bullet.y += bulletVelocityY;
         context.fillStyle="white";
-        context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+        context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);  //vykresleni strel
 
         //kolize strel s mimozemstany
         for (let j = 0; j < alienArray.length; j++) {
             let alien = alienArray[j];
-            if (!bullet.used && alien.alive && detectCollision(bullet, alien)) {
+            if (!bullet.used && alien.alive && detectCollision(bullet, alien)) { //hlida jestli nenastane kolize mimozemstana
                 bullet.used = true;
                 alien.alive = false;
                 alienCount--;
-                score += 100;
+                score += 100; // pokud je mimozemstan zasazen, pricte se 100 do skore
             }
         }
     }
 
     //vycistit strely
-    while (bulletArray.length > 0 && (bulletArray[0].used || bulletArray[0].y < 0)) {
+    while (bulletArray.length > 0 && (bulletArray[0].used || bulletArray[0].y < 0)) { // odstranuje prebytecne strely aby se nepretizila pamet
         bulletArray.shift(); //odstrani prvni prvek z array
     }
 
@@ -136,19 +136,19 @@ function update() {
     alienColumns = Math.min(alienColumns + 1, columns/2 -2); //omezeni na 16/2 -2 = 6
     alienRows = Math.min(alienRows + 1, rows-4); //cap at 16-4 = 12
     alienVelocityX += 0.1; //zvyseni rychlosti mimozemstanu
-    alienArray = [];
-    bulletArray = [];
-    createAliens();
+    alienArray = []; //pole mimozemstanu
+    bulletArray = []; //pole strel
+    createAliens(); //vyvola funkci ktera vytvori mimozemstany
     }
 
-    //skore
+    //skore tabulka
     context.fillStyle="white";
     context.font="bolder 22px sans-serif";
     context.fillText(score, 5, 20);
 
 }
 
-function moveShip(e) {
+function moveShip(e) { // funkce pro pohyb lodi
     if(gameOver){
         return;
     }
@@ -161,10 +161,10 @@ function moveShip(e) {
     }
 }
 
-function createAliens() {
+function createAliens() {  // vytvoreni mimozemstanu na zacatku hry
     for(let c = 0; c < alienColumns; c++){
         for (let r = 0; r < alienRows; r++) {
-            let alien = {
+            let alien = { // velikost, pozice a obrazek mimozemstana
                 img : alienImg,
                 x : alienX + c*alienWidth,
                 y : alienY + r*alienHeight,
@@ -172,31 +172,31 @@ function createAliens() {
                 height : alienHeight,
                 alive : true
             }
-            alienArray.push(alien);
+            alienArray.push(alien); // zapsani mimozemstana do pole
         }
     }
-    alienCount = alienArray.length;
+    alienCount = alienArray.length; //pocet mimozemstanu v poli
 }
 
-function shoot(e) {
+function shoot(e) { // funkce strelby
     if(gameOver){
         return;
     }
 
     if (e.code == "Space") {
         //strelba
-        let bullet = {
+        let bullet = { //velikost, pozice strely
             x : ship.x + shipWidth*15/32,
             y : ship.y,
             width : tileSize/8,
             height : tileSize/2,
             used : false
         }
-        bulletArray.push(bullet);
+        bulletArray.push(bullet); // zapsani strely do pole
     }
 }
 
-function detectCollision(a, b) {
+function detectCollision(a, b) { // detekce kolize
     return a.x < b.x + b.width &&   //levy horni roh a nedosahuje na pravy horni roh b
            a.x + a.width > b.x &&   //pravy horni roh a projde levym hornim rohem b
            a.y < b.y + b.height &&  //levy horni roh a nedosahuje na pravy spodni roh b
